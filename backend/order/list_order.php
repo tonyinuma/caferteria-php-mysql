@@ -2,8 +2,11 @@
 
 include('../../db/connection.php');
 
-$query = "SELECT * from orders";
-$result = mysqli_query($conn, $query);
+$sql = "SELECT o.*, p.name from orders o
+        INNER JOIN products p on o.product_id = p.id
+        ORDER BY id DESC";
+
+$result = mysqli_query($conn, $sql);
 
 if (!$result) {
     die('Query Failed' . mysqli_error($conn));
@@ -14,7 +17,7 @@ while ($row = mysqli_fetch_array($result)) {
     $json[] = array(
         'id' => $row['id'],
         'order_number' => $row['order_number'],
-        'product_id' => $row['product_id'],
+        'name' => $row['name'],
         'quantity' => $row['quantity'],
         'total' => $row['total']
     );

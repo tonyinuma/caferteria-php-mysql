@@ -25,7 +25,7 @@ if (isset($_POST['product_id'])) {
         );
     }
 
-    $json_string = json_encode($json[0]);
+    $json_string = json_encode(isset($json[0]) ? $json[0] : $json);
     echo $json_string;
 }
 

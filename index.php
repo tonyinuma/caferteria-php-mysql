@@ -8,7 +8,7 @@
           <legend>Vender</legend>
           <input type="hidden" id="order_id">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Ingresar Código del Producto"
+            <input type="text" id="product_id" class="form-control" placeholder="Ingresar Código del Producto"
               aria-describedby="product_id">
             <button class="btn btn-primary" type="button" id="search_product">Buscar</button>
           </div>
@@ -19,22 +19,15 @@
           </div>
           <div class="form-group">
             <label for="quantity">Cantidad</label>
-            <input type="number" value="1" class="form-control required" id="quantity">
+            <input type="number" min="1" step="1" value="1" class="form-control" required id="quantity">
           </div>
           <button type="submit" class="btn btn-primary">Vender</button>
         </fieldset>
       </form>
     </div>
     <div class="col-md-7 p-4">
-      <div class="card my-4" id="order-result">
-        <div class="card-body">
-          <h3>Ventas</h3>
-          <ul id="container">
-          </ul>
-        </div>
-        <p class="text-danger">* Hacer Click en nombre del libro para editar</p>
-      </div>
-      <div class="row" id="order-item"></div>
+      <legend>Ventas</legend>
+      <div class="row" id="order-list" style="overflow: auto; max-height: 600px; width: 930px"></div>
     </div>
   </div>
 </div>

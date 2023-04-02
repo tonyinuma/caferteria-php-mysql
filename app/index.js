@@ -3,6 +3,7 @@ $(function () {
     let edit = false;
 
     getProducts();
+    getOrders();
     $('#products-result').hide();
 
     // Buscar Producto
@@ -91,6 +92,109 @@ $(function () {
                             </div>`});
 
             $('#product-list').html(template);
+        });
+    }
+
+    // Buscar Producto para venta
+    $("#search_product").click(function (e) {
+        let product_id = $("#product_id").val();
+        if (product_id) {
+            getProductToSell(product_id);
+        } else {
+            Swal.fire({
+                title: 'Debe ingresar el código del producto que desea seleccionar',
+                icon: 'warning',
+                confirmButtonText: 'Aceptar'
+            })
+        }
+    });
+
+    function getProductToSell(product_id) {
+        $.post('/backend/product/get_product.php', { product_id }, function (response) {
+            const product = JSON.parse(response);
+            if (product.id) {
+                if (product.stock > 0) {
+
+                    $('#product_id').val(product.id);
+                    $('#product_name').val(product.name);
+
+                } else {
+                    Swal.fire({
+                        title: 'Este producto no tiene stock disponible en este momento',
+                        icon: 'warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    $('#product_id').val('');
+                    $('#product_name').val('');
+                }
+            } else {
+                Swal.fire({
+                    title: 'No se encontó el código de este producto',
+                    icon: 'warning',
+                    confirmButtonText: 'Aceptar'
+                })
+                $('#product_id').val('');
+                $('#product_name').val('');
+            }
+        });
+    }
+
+    // Añadir una Venta
+    $('#orderForm').submit(function (e) {
+
+        e.preventDefault();
+        const order = {
+            product_id: $('#product_id').val(),
+            quantity: $('#quantity').val()
+        };
+
+        $.post(
+            '/backend/order/add_order.php',
+            order,
+            function (response) {
+                const data = JSON.parse(response);
+                if (data.order_number) {
+                    Swal.fire({
+                        title: 'Se realizó la venta con exito',
+                        text: `Número de Order: ${data.order_number}`,
+                        icon: 'success',
+                        confirmButtonText: 'Confirmar'
+                    })
+                    getOrders();
+                    $('#orderForm').trigger('reset');
+                } else {
+                    Swal.fire({
+                        title: 'Ups, lo siento! Ocurrio un error Inesperado.',
+                        text: 'Contacta con el administrador',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    })
+                }
+            }
+        );
+    });
+
+    // Obtener Ventas
+    function getOrders() {
+        $.post('/backend/order/list_order.php', function (response) {
+            const orders = JSON.parse(response);
+            let template = '';
+            orders.forEach(order => {
+                template += `<div class="card border-primary mb-3 mr-2" style="max-width: 18rem;" order_id="${order.id}">
+                                <div class="card-header inline-block">
+                                    <strong class="mr-auto">Cant. ${order.quantity}</strong>
+                                    -
+                                    <span class="badge badge-success"># ${order.order_number}</span>
+                                  </button></div>
+                                  <div class="card-body">
+                                    <h4 class="card-title">
+                                        <a href="#">${order.name}</a>
+                                    </h4>
+                                    <p class="card-text">Total: S/. ${order.total}</p>
+                                </div>
+                            </div>`});
+
+            $('#order-list').html(template);
         });
     }
 }); 
