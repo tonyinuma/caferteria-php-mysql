@@ -43,7 +43,7 @@
       </form>
     </div>
     <div class="col-md-7 p-4">
-      <p class="text-danger">* Hacer Click en nombre del libro para editar</p>
+      <p class="text-danger">* Hacer Click en nombre del producto para editar</p>
       <div class="row" id="product-list" style="overflow: auto; max-height: 600px; width: 930px"></div>
     </div>
   </div>
