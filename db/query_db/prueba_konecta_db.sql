@@ -1,6 +1,3 @@
-CREATE DATABASE `prueba_konecta_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
-
-
 -- prueba_konecta_db.products definition
 
 CREATE TABLE `products` (
