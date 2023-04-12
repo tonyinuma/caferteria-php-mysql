@@ -204,8 +204,8 @@ $(function () {
     function getReport() {
         $.post('/backend/report.php', function (response) {
             const { full, top } = JSON.parse(response);
-            $('#product_full').html(`${full.name} con ${full.stock} productos en stock`);
-            $('#product_top').html(`${top.name} con ${top.sells} productos vendidos`);
+            $('#product_full').html(`${full?.name} con ${full?.stock} productos en stock`);
+            $('#product_top').html(`${top?.name} con ${top?.sells} productos vendidos`);
         });
     }
 }); 
